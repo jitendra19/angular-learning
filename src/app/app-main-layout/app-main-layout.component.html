@@ -1,0 +1,212 @@
+<div class="container"
+  style="margin-top: 75px">
+  <div style="margin-bottom: 25px">    
+    <button class="btn"
+      [ngClass]="{'btn-primary':selectedCalc === calculators[0]}"
+  
+      (click)="onSelectCalculator(0)">FD Calculator</button>
+    <button class="btn"
+      [ngClass]="{'btn-primary':selectedCalc === calculators[1]}"
+  
+      (click)="onSelectCalculator(1)">RD Calculator</button>
+    <button class="btn"
+      [ngClass]="{'btn-primary':selectedCalc === calculators[2]}"
+  
+      (click)="onSelectCalculator(2)">lumsum Calculator</button>
+    <button class="btn"
+      [ngClass]="{'btn-primary':selectedCalc === calculators[3]}"
+  
+      (click)="onSelectCalculator(3)">SIP Calculator</button>
+  </div>
+  <!-- FD calc -->
+  <div *ngIf="selectedCalc === calculators[0]">
+    <div>
+      <h3>FD calculation</h3>
+      <form (ngSubmit)="onSubmit()"
+        #FDForm="ngForm">
+        <div class="form-group">
+          <label for="principal">Principal</label>
+          <input type="text"
+            class="form-control"
+            id="principal"
+            required
+            minlength="3"
+            appForbiddenName="bob"
+            [(ngModel)]="model.principal"
+            (keyup)="onPrincipalKeyup()"
+            name="principal"
+            #principal="ngModel">
+            <span value="">{{inWords}}</span>
+          <!-- <div [hidden]="principal.valid || principal.pristine"        
+            class="alert alert-danger">
+            principal is required
+          </div> -->
+
+          <div *ngIf="principal.invalid && (principal.dirty || principal.touched)"
+          class="alert alert-danger">
+            <div *ngIf="principal.errors.required">
+              principal is required.
+            </div>
+            <div *ngIf="principal.errors.minlength">
+              principal must be at least 3 characters long.
+            </div>
+            <div *ngIf="principal.errors.forbiddenName">
+                Name cannot be Bob.
+              </div>            
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="intrestRate">Intrest Rate</label>
+          <input type="text"
+            class="form-control"
+            id="intrestRate"
+            required
+            [(ngModel)]="model.intrestRate"
+            name="intrestRate"
+            #intrestRate="ngModel">
+          <div [hidden]="intrestRate.valid || intrestRate.pristine"
+        
+            class="alert alert-danger">
+            intrestRate is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="Compound">Compounded By</label>
+          <select class="form-control"
+            id="Compound"
+            required
+            [(ngModel)]="model.Compound"
+            name="Compound">
+            <option *ngFor="let c of compoundingBy"
+              [value]="c.value">{{c.label}}</option>
+          </select>
+        </div>
+
+        <button type="submit"
+          class="btn btn-success"
+          [disabled]="!FDForm.form.valid">Submit</button>
+        <button type="button"
+          class="btn btn-default"
+          (click)="newFDObject(); FDForm.reset()">RESET</button>
+      </form>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <!-- <div class="row">
+        <div class="col-xs-3">Principal:-</div>
+        <div class="col-xs-9  pull-left">{{ model.principal }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">Intrest Rate:-</div>
+        <div class="col-xs-9 pull-left">{{ model.intrestRate }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">Compound:-</div>
+        <div class="col-xs-9 pull-left">{{ model.Compound }}</div>
+      </div>
+      <br> -->
+
+      <div class="row"
+        style="margin-left: 25px;">
+        <h2 class="">Maturity Amount &nbsp;: &nbsp;</h2>
+        <h2 class=" pull-left">{{ output.maturityAmount | currency: 'INR'
+          }}
+        </h2>
+        <span class=""
+          style="width: 200px;"></span>
+        <h2 class="">Interest Earned &nbsp;: &nbsp;</h2>
+        <h2 class=" pull-left">{{ output.returnEarned | currency: 'INR'}}</h2>
+      </div>
+      <!-- <button class="btn btn-primary"
+        (click)="submitted=false">Edit</button>
+    </div> -->
+    </div>
+  </div>
+
+    <!-- RD calc -->
+  <div *ngIf="selectedCalc === calculators[1]">
+      <div>
+        <h3>RD Calculator</h3>
+        
+        <form (ngSubmit)="onSubmit()"
+          #FDForm1="ngForm">
+          <div class="form-group">
+            <label for="principal">Principal:</label>
+            
+            <input type="text"
+              class="form-control"
+              id="principal"
+              required
+              [(ngModel)]="model.principal"
+              (keyup)="onPrincipalKeyup()"
+              name="principal"
+              #principal="ngModel">
+            <div [hidden]="principal.valid || principal.pristine"
+          
+              class="alert alert-danger">
+              principal is required
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="intrestRate">Intrest Rate</label>
+            <input type="text"
+              class="form-control"
+              id="intrestRate"
+              required
+              [(ngModel)]="model.intrestRate"
+              name="intrestRate"
+              #intrestRate="ngModel">
+            <div [hidden]="intrestRate.valid || intrestRate.pristine"
+          
+              class="alert alert-danger">
+              intrestRate is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Compound">Compounded By</label>
+            <select class="form-control"
+              id="Compound"
+              required
+              [(ngModel)]="model.Compound"
+              name="Compound">
+              <option *ngFor="let c of compoundingBy"
+                [value]="c.value">{{c.label}}</option>
+            </select>
+          </div>
+
+          <button type="submit"
+            class="btn btn-success"
+            [disabled]="!FDForm1.form.valid">Submit</button>
+          <button type="button"
+            class="btn btn-default"
+            (click)="newFDObject(); FDForm1.reset()">RESET</button>
+        </form>
+      </div>
+      <div style="margin-top: 25px;">
+        <div class="row"
+          style="margin-left: 25px;">
+          <h2 class="">Maturity Amount &nbsp;: &nbsp;</h2>
+          <h2 class=" pull-left">{{ output.maturityAmount | currency: 'INR'
+            }}
+          </h2>
+          <span class=""
+            style="width: 200px;"></span>
+          <h2 class="">Interest Earned &nbsp;: &nbsp;</h2>
+          <h2 class=" pull-left">{{ output.returnEarned | currency: 'INR'}}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- lumsum calc -->
+<div *ngIf="selectedCalc === calculators[2]">
+  <h3>lumpsum Calculator</h3>
+  {{selectedCalc}}
+</div>
+<!-- SIP calc -->
+<div *ngIf="selectedCalc === calculators[3]">
+  <h3>SIP Calculator</h3>
+  {{selectedCalc}}
+</div>
